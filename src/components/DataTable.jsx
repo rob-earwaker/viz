@@ -2,13 +2,18 @@ import React from 'react';
 
 function DataTable(props) {
     return <table>
-        <tr>
-            {props.dataFrame.columnLabels().map(label => <th>{label}</th>)}
-        </tr>
-        {props.dataFrame.columnValues().map(values =>
+        <thead>
             <tr>
-                {values.map(value => <td>{value}</td>)}
-            </tr>)}
+                {props.dataFrame.columnLabels().map((label, index) =>
+                    <th key={index}>{label}</th>)}
+            </tr>
+        </thead>
+        <tbody>
+            {props.dataFrame.columnValues().map((values, trIndex) =>
+                <tr key={trIndex}>
+                    {values.map((value, tdIndex) => <td key={tdIndex}>{value}</td>)}
+                </tr>)}
+        </tbody>
     </table>
 }
 
