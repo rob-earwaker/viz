@@ -10,12 +10,12 @@ class TabView extends React.Component {
 
     render() {
         return <div>
-            <ol>
+            <div>
                 {this.props.children.map((child, index) =>
-                    <li key={index} onClick={_ => this.setState({ activeTabIndex: index })}>
+                    <button key={index} onClick={_ => this.setState({ activeTabIndex: index })}>
                         {child.props.label}
-                    </li>)}
-            </ol>
+                    </button>)}
+            </div>
             <div>
                 {this.props.children[this.state.activeTabIndex]}
             </div>
