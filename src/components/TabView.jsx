@@ -1,5 +1,8 @@
 import React from 'react';
 
+import TabSelector from 'components/TabSelector';
+import TabSelectorGroup from 'components/TabSelectorGroup';
+
 class TabView extends React.Component {
     constructor(props) {
         super(props);
@@ -10,12 +13,15 @@ class TabView extends React.Component {
 
     render() {
         return <div>
-            <div>
+            <TabSelectorGroup>
                 {this.props.children.map((child, index) =>
-                    <button key={index} onClick={_ => this.setState({ activeTabIndex: index })}>
+                    <TabSelector
+                        key={index}
+                        onClick={_ => this.setState({ activeTabIndex: index })}
+                        active={index === this.state.activeTabIndex}>
                         {child.props.label}
-                    </button>)}
-            </div>
+                    </TabSelector>)}
+            </TabSelectorGroup>
             <div>
                 {this.props.children[this.state.activeTabIndex]}
             </div>
