@@ -1,26 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 
-import Style from 'utils/Style';
-
-const StyledDataTable = styled.table`
-    border-collapse: collapse;
-    font-family: ${Style.fontFamily};
-    width: 100%;
-`;
-
-const TableHeaderCell = styled.th`
-    border: 1px solid #ddd;
-    padding: 0.5em;
-`;
-
-const TableDataCell = styled.td`
-    border: 1px solid #ddd;
-    padding: 0.5em;
-`;
+import Table from 'components/Table';
+import TableHeaderCell from 'components/TableHeaderCell';
+import TableDataCell from 'components/TableDataCell';
 
 function DataTable(props) {
-    return <StyledDataTable>
+    return <Table>
         <thead>
             <tr>
                 {props.dataFrame.columnLabels().map((label, index) =>
@@ -33,7 +18,7 @@ function DataTable(props) {
                     {values.map((value, tdIndex) => <TableDataCell key={tdIndex}>{value}</TableDataCell>)}
                 </tr>)}
         </tbody>
-    </StyledDataTable>
+    </Table>
 }
 
 export default DataTable;
