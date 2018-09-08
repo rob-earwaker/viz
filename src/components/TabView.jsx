@@ -27,6 +27,7 @@ const TabSelector = styled.button`
     display: inline-block;
     font-family: ${Style.fontFamily};
     font-size: 18px;
+    outline: none;
     padding: 0.5em 1em;
 `;
 
