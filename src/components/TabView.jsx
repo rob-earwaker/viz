@@ -3,8 +3,21 @@ import styled from 'styled-components';
 
 import Style from 'utils/Style';
 
+const StyledTabView = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+`;
+
 const TabSelectorGroup = styled.div`
-    background-color: ${Style.primary.color}
+    background-color: ${Style.primary.color};
+    flex: 0 1 auto;
+`;
+
+const TabContent = styled.div`
+    flex: 1 1 auto;
+    height: 100%;
+    overflow: auto;
 `;
 
 const TabSelector = styled.button`
@@ -26,7 +39,7 @@ class TabView extends React.Component {
     }
 
     render() {
-        return <div>
+        return <StyledTabView>
             <TabSelectorGroup>
                 {this.props.children.map((child, index) =>
                     <TabSelector
@@ -36,10 +49,10 @@ class TabView extends React.Component {
                         {child.props.label}
                     </TabSelector>)}
             </TabSelectorGroup>
-            <div>
+            <TabContent>
                 {this.props.children[this.state.activeTabIndex]}
-            </div>
-        </div>
+            </TabContent>
+        </StyledTabView>
     }
 }
 

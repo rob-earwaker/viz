@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const TableHeaderCell = styled.th`
-    border: 1px solid #ddd;
+    outline: 0.5px solid #ddd;
     padding: 0.5em;
 `;
 

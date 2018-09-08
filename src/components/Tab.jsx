@@ -1,9 +1,14 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const Div = styled.div`
+    height: 100%;
+`;
 
 function Tab(props) {
-    return <div>
+    return <Div>
         {props.children}
-    </div>
+    </Div>
 }
 
 export default Tab;
