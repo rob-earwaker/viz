@@ -5,11 +5,8 @@ const d3 = { extent, scaleLinear, scaleUtc, isoParse };
 import React from 'react';
 import styled from 'styled-components';
 
+import Svg from 'components/Svg';
 import Style from 'utils/Style';
-
-const Svg = styled.svg`
-    display: block;
-`;
 
 function createScale(column, range) {
     switch (column.type) {
@@ -34,16 +31,18 @@ function createScale(column, range) {
 function Plot(props) {
     const { xColumn, yColumn } = props;
 
-    const xRangeMax = 100;
-    const yRangeMax = 100;
+    const xScale = createScale(xColumn, [0, 100]);
+    const yScale = createScale(yColumn, [100, 0]);
 
-    const viewBox = '0 0 ' + xRangeMax + ' ' + yRangeMax;
-
-    const xScale = createScale(xColumn, [0, xRangeMax]);
-    const yScale = createScale(yColumn, [yRangeMax, 0]);
-
-    return <Svg width='100%' height='100%' viewBox={viewBox}>
-
+    return <Svg width='100%' height='100%' >
+        <Svg width='50%' height='100%'>
+            <rect width='50%' height='100%' fill='green'></rect>
+            <rect x='50%' width='50%' height='100%' fill='yellow'></rect>
+        </Svg>
+        <Svg x='50%' width='50%' height='100%' >
+            <rect width='50%' height='100%' fill='blue'></rect>
+            <rect x='50%' width='50%' height='100%' fill='pink'></rect>
+        </Svg>
     </Svg>
 }
 
