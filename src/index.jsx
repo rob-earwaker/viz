@@ -16,17 +16,19 @@ const WindowDiv = styled.div`
     width: 100vw;
 `;
 
+const dataFrame = new DataFrame(data);
+
 ReactDOM.render(
     <WindowDiv>
         <TabView>
             <Tab label='DATA'>
-                <DataTable dataFrame={new DataFrame(data)}></DataTable>
+                <DataTable dataFrame={dataFrame}></DataTable>
             </Tab>
             <Tab label='SCHEMA'>
-                <SchemaTable dataFrame={new DataFrame(data)}></SchemaTable>
+                <SchemaTable dataFrame={dataFrame}></SchemaTable>
             </Tab>
             <Tab label='PLOT'>
-                <Plot dataFrame={new DataFrame(data)}></Plot>
+                <Plot xColumn={dataFrame.columns[0]} yColumn={dataFrame.columns[1]}></Plot>
             </Tab>
         </TabView>
     </WindowDiv>,
