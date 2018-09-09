@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Transform from 'utils/Transform';
+import Path from 'utils/Path';
 
 const Group = styled.g`
     display: block;
@@ -13,19 +13,16 @@ const GridLine = styled.path`
 `;
 
 function Grid(props) {
-    const { x, y, width, height, xScale, yScale } = props;
+    const { xScale, yScale } = props;
 
-    const xTickPositions = xScale.getTickPositions({ tickCount: 10, minPosition: 0, maxPosition: width });
-    const yTickPositions = yScale.getTickPositions({ tickCount: 10, minPosition: height, maxPosition: 0 });
+    const dx = xScale.maxPosition - xScale.minPosition;
+    const dy = yScale.maxPosition - yScale.minPosition;
+    const getXPathData = tick => new Path().M(tick.position, yScale.minPosition).v(dy).pathData;
+    const getYPathData = tick => new Path().M(xScale.minPosition, tick.position).h(dx).pathData;
 
-    const xPathData = 'M0,0V' + height;
-    const yPathData = 'M0,0H' + width;
-
-    return <Group transform={Transform.translate(x, y)}>
-        {xTickPositions.map((xPosition, index) =>
-            <GridLine key={index} transform={Transform.translate(xPosition, 0)} d={xPathData} />)}
-        {yTickPositions.map((yPosition, index) =>
-            <GridLine key={index} transform={Transform.translate(0, yPosition)} d={yPathData} />)}
+    return <Group>
+        {xScale.getTicks().map((tick, index) => <GridLine key={index} d={getXPathData(tick)} />)}
+        {yScale.getTicks().map((tick, index) => <GridLine key={index} d={getYPathData(tick)} />)}
     </Group>
 }
 

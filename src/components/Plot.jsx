@@ -2,25 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Grid from 'components/Grid';
-import DateScale from 'utils/DateScale';
-import NumberScale from 'utils/NumberScale';
+import Scale from 'utils/Scale';
 
 const Svg = styled.svg`
     display: block;
     height: 100%;
     width: 100%;
 `;
-
-function createScale(column) {
-    switch (column.type) {
-        case 'dateTime':
-            return new DateScale(column.data, column.format);
-        case 'number':
-            return new NumberScale(column.data);
-        default:
-            return undefined;
-    }
-}
 
 class Plot extends React.Component {
     constructor(props) {
@@ -66,11 +54,16 @@ class Plot extends React.Component {
         const isVisible = width !== 0 && height !== 0;
         const viewBox = !isVisible ? null : '0 0 ' + width + ' ' + height;
 
-        const xScale = createScale(xColumn);
-        const yScale = createScale(yColumn);
+        const minXPosition = 0.05 * width;
+        const maxXPosition = 0.95 * width;
+        const minYPosition = 0.95 * height;
+        const maxYPosition = 0.05 * height;
+
+        const xScale = new Scale(xColumn, minXPosition, maxXPosition);
+        const yScale = new Scale(yColumn, minYPosition, maxYPosition);
 
         return <Svg viewBox={viewBox} innerRef={svgElement => this.updateSize(svgElement)}>
-            <Grid x={0.05 * width} y={0.05 * height} width={0.90 * width} height={0.90 * height} xScale={xScale} yScale={yScale} />
+            <Grid xScale={xScale} yScale={yScale} />
         </Svg>
     }
 }

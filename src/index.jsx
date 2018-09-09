@@ -28,7 +28,7 @@ ReactDOM.render(
                 <SchemaTable dataFrame={dataFrame} />
             </Tab>
             <Tab label='PLOT'>
-                <Plot xColumn={dataFrame.columns[0]} yColumn={dataFrame.columns[1]} />
+                <Plot xColumn={dataFrame.getColumn('Time')} yColumn={dataFrame.getColumn('Random number')} />
             </Tab>
         </TabView>
     </WindowDiv>,
