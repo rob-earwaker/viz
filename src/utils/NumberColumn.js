@@ -6,13 +6,13 @@ class NumberColumn {
     constructor(column) {
         this.label = column.label;
         this.type = column.type;
-        this.format = column.format;
-        this.data = column.data;
+        this.values = column.data;
+        this.prettyValues = column.data;
     }
 
     getScale(positionRange) {
         return d3.scaleLinear()
-            .domain(d3.extent(this.data))
+            .domain(d3.extent(this.values))
             .range([positionRange.minPosition, positionRange.maxPosition]);
     }
 }

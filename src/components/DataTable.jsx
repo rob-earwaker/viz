@@ -13,7 +13,7 @@ function DataTable(props) {
             </tr>
         </thead>
         <tbody>
-            {props.dataFrame.getValues().map((values, trIndex) =>
+            {props.dataFrame.getPrettyValues().map((values, trIndex) =>
                 <tr key={trIndex}>
                     {values.map((value, tdIndex) => <TableDataCell key={tdIndex}>{value}</TableDataCell>)}
                 </tr>)}

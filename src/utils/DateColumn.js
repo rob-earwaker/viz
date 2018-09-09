@@ -1,28 +1,36 @@
 import { extent } from 'd3-array';
 import { scaleUtc } from 'd3-scale';
-import { isoParse } from 'd3-time-format';
-const d3 = { extent, scaleUtc, isoParse };
+import { isoFormat, isoParse } from 'd3-time-format';
+const d3 = { extent, scaleUtc, isoFormat, isoParse };
+
+function getFormatter(format) {
+    switch (format) {
+        case 'iso8601':
+            return {
+                parse: d3.isoParse,
+                format: d3.isoFormat
+            };
+        default:
+            return {
+                parse: value => value,
+                format: value => value
+            };
+    }
+}
 
 class DateColumn {
     constructor(column) {
         this.label = column.label;
         this.type = column.type;
         this.format = column.format;
-        this.data = column.data;
-    }
-
-    getParseFunction() {
-        switch (this.format) {
-            case 'iso8601':
-                return d3.isoParse;
-            default:
-                return value => value;
-        }
+        const formatter = getFormatter(column.format);
+        this.values = column.data.map(formatter.parse);
+        this.prettyValues = this.values.map(formatter.format);
     }
 
     getScale(positionRange) {
         return d3.scaleUtc()
-            .domain(d3.extent(this.data, this.getParseFunction()))
+            .domain(d3.extent(this.values))
             .range([positionRange.minPosition, positionRange.maxPosition]);
     }
 }

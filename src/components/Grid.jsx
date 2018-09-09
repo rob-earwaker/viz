@@ -9,7 +9,6 @@ const Group = styled.g`
 
 const GridLine = styled.path`
     stroke: #d3d3d3;
-    stroke-width: 1;
 `;
 
 function Grid(props) {

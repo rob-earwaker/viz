@@ -9,13 +9,17 @@ class Scale {
         this.scale = column.getScale(positionRange).nice(this.tickCount);
     }
 
+    getPosition(value) {
+        return this.scale(value);
+    }
+
     getTicks() {
         const tickValues = this.scale.ticks(this.tickCount);
         const tickFormat = this.scale.tickFormat(this.tickCount);
 
         return tickValues.map(tickValue => {
             const label = tickFormat(tickValue);
-            const position = this.scale(tickValue);
+            const position = this.getPosition(tickValue);
             return new Tick(label, position)
         });
     }

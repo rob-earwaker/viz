@@ -5,9 +5,9 @@ class DataFrame {
         this.columns = data.map(Column.create);
     }
 
-    getValues() {
-        return this.columns[0].data.map((_, index) =>
-            this.columns.map(column => column.data[index]));
+    getPrettyValues() {
+        return this.columns[0].prettyValues.map((_, index) =>
+            this.columns.map(column => column.prettyValues[index]));
     }
 
     getColumn(label) {
