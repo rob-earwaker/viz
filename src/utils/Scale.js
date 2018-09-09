@@ -1,12 +1,12 @@
 import Tick from "utils/Tick";
 
 class Scale {
-    constructor(column, minPosition, maxPosition) {
+    constructor(column, positionRange) {
         this.label = column.label;
-        this.minPosition = minPosition;
-        this.maxPosition = maxPosition;
+        this.minPosition = positionRange.minPosition;
+        this.maxPosition = positionRange.maxPosition;
         this.tickCount = 10;
-        this.scale = column.getScale(minPosition, maxPosition).nice(this.tickCount);
+        this.scale = column.getScale(positionRange).nice(this.tickCount);
     }
 
     getTicks() {

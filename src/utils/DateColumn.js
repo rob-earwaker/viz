@@ -20,10 +20,10 @@ class DateColumn {
         }
     }
 
-    getScale(minPosition, maxPosition) {
+    getScale(positionRange) {
         return d3.scaleUtc()
             .domain(d3.extent(this.data, this.getParseFunction()))
-            .range([minPosition, maxPosition]);
+            .range([positionRange.minPosition, positionRange.maxPosition]);
     }
 }
 

@@ -10,10 +10,10 @@ class NumberColumn {
         this.data = column.data;
     }
 
-    getScale(minPosition, maxPosition) {
+    getScale(positionRange) {
         return d3.scaleLinear()
             .domain(d3.extent(this.data))
-            .range([minPosition, maxPosition]);
+            .range([positionRange.minPosition, positionRange.maxPosition]);
     }
 }
 

@@ -5,11 +5,7 @@ class DataFrame {
         this.columns = data.map(Column.create);
     }
 
-    columnLabels() {
-        return this.columns.map(column => column.label);
-    }
-
-    columnValues() {
+    getValues() {
         return this.columns[0].data.map((_, index) =>
             this.columns.map(column => column.data[index]));
     }

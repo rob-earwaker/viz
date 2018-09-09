@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Grid from 'components/Grid';
+import PositionRange from 'utils/PositionRange';
 import Scale from 'utils/Scale';
 
 const Svg = styled.svg`
@@ -54,13 +55,11 @@ class Plot extends React.Component {
         const isVisible = width !== 0 && height !== 0;
         const viewBox = !isVisible ? null : '0 0 ' + width + ' ' + height;
 
-        const minXPosition = 0.05 * width;
-        const maxXPosition = 0.95 * width;
-        const minYPosition = 0.95 * height;
-        const maxYPosition = 0.05 * height;
+        const xPositionRange = new PositionRange(0.05 * width, 0.95 * width);
+        const yPositionRange = new PositionRange(0.95 * height, 0.05 * height);
 
-        const xScale = new Scale(xColumn, minXPosition, maxXPosition);
-        const yScale = new Scale(yColumn, minYPosition, maxYPosition);
+        const xScale = new Scale(xColumn, xPositionRange);
+        const yScale = new Scale(yColumn, yPositionRange);
 
         return <Svg viewBox={viewBox} innerRef={svgElement => this.updateSize(svgElement)}>
             <Grid xScale={xScale} yScale={yScale} />

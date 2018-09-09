@@ -8,12 +8,12 @@ function DataTable(props) {
     return <Table>
         <thead>
             <tr>
-                {props.dataFrame.columnLabels().map((label, index) =>
-                    <TableHeaderCell key={index}>{label}</TableHeaderCell>)}
+                {props.dataFrame.columns.map((column, index) =>
+                    <TableHeaderCell key={index}>{column.label}</TableHeaderCell>)}
             </tr>
         </thead>
         <tbody>
-            {props.dataFrame.columnValues().map((values, trIndex) =>
+            {props.dataFrame.getValues().map((values, trIndex) =>
                 <tr key={trIndex}>
                     {values.map((value, tdIndex) => <TableDataCell key={tdIndex}>{value}</TableDataCell>)}
                 </tr>)}
