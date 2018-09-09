@@ -22,13 +22,13 @@ ReactDOM.render(
     <WindowDiv>
         <TabView>
             <Tab label='DATA'>
-                <DataTable dataFrame={dataFrame}></DataTable>
+                <DataTable dataFrame={dataFrame} />
             </Tab>
             <Tab label='SCHEMA'>
-                <SchemaTable dataFrame={dataFrame}></SchemaTable>
+                <SchemaTable dataFrame={dataFrame} />
             </Tab>
             <Tab label='PLOT'>
-                <Plot xColumn={dataFrame.columns[0]} yColumn={dataFrame.columns[1]}></Plot>
+                <Plot xColumn={dataFrame.columns[0]} yColumn={dataFrame.columns[1]} />
             </Tab>
         </TabView>
     </WindowDiv>,

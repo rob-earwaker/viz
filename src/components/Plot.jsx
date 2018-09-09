@@ -5,8 +5,13 @@ const d3 = { extent, scaleLinear, scaleUtc, isoParse };
 import React from 'react';
 import styled from 'styled-components';
 
-import Svg from 'components/Svg';
-import Style from 'utils/Style';
+import Grid from 'components/Grid';
+
+const Svg = styled.svg`
+    display: block;
+    height: 100%;
+    width: 100%;
+`;
 
 function createScale(column, range) {
     switch (column.type) {
@@ -28,22 +33,57 @@ function createScale(column, range) {
     }
 }
 
-function Plot(props) {
-    const { xColumn, yColumn } = props;
+class Plot extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            width: 0,
+            height: 0
+        };
+        this.resizeEventHandler = this.resizeEventHandler.bind(this);
+    }
 
-    const xScale = createScale(xColumn, [0, 100]);
-    const yScale = createScale(yColumn, [100, 0]);
+    componentDidMount() {
+        window.addEventListener('resize', this.resizeEventHandler);
+    }
 
-    return <Svg width='100%' height='100%' >
-        <Svg width='50%' height='100%'>
-            <rect width='50%' height='100%' fill='green'></rect>
-            <rect x='50%' width='50%' height='100%' fill='yellow'></rect>
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resizeEventHandler);
+    }
+
+    resizeEventHandler() {
+        this.forceUpdate();
+    }
+
+    updateSize(svgElement) {
+        if (svgElement === null) {
+            return;
+        }
+
+        const { width, height } = this.state;
+
+        if (svgElement.clientWidth !== width || svgElement.clientHeight !== height) {
+            this.setState({
+                width: svgElement.clientWidth,
+                height: svgElement.clientHeight
+            });
+        }
+    }
+
+    render() {
+        const { xColumn, yColumn } = this.props;
+        const { width, height } = this.state;
+
+        const isVisible = width !== 0 && height !== 0;
+        const viewBox = !isVisible ? null : '0 0 ' + width + ' ' + height;
+
+        const xScale = createScale(xColumn, [0, 200]);
+        const yScale = createScale(yColumn, [200, 0]);
+
+        return <Svg viewBox={viewBox} innerRef={svgElement => this.updateSize(svgElement)}>
+            <Grid width={width} height={height} xScale={xScale} yScale={yScale} />
         </Svg>
-        <Svg x='50%' width='50%' height='100%' >
-            <rect width='50%' height='100%' fill='blue'></rect>
-            <rect x='50%' width='50%' height='100%' fill='pink'></rect>
-        </Svg>
-    </Svg>
+    }
 }
 
 export default Plot;
