@@ -1,37 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function getTickDomainValues(extent) {
-    const minValue = extent[0];
-    const maxValue = extent[1];
-    const range = maxValue - minValue;
+import Transform from 'utils/Transform';
 
-    const tickCount = 10;
+const Group = styled.g`
+    display: block;
+`;
 
-    const tickInterval = range / (tickCount - 1);
-    const tickValues = [];
-
-    for (let index = 0; index < tickCount; index++) {
-        tickValues[index] = minValue + index * tickInterval;
-    }
-
-    return tickValues;
-}
+const GridLine = styled.path`
+    stroke: #d3d3d3;
+    stroke-width: 1;
+`;
 
 function Grid(props) {
-    const { width, height, xScale, yScale } = props;
+    const { x, y, width, height, xScale, yScale } = props;
 
-    const xTickValues = getTickDomainValues(xScale.domain());
-    const yTickValues = getTickDomainValues(yScale.domain());
+    const xTickPositions = xScale.getTickPositions({ tickCount: 10, minPosition: 0, maxPosition: width });
+    const yTickPositions = yScale.getTickPositions({ tickCount: 10, minPosition: height, maxPosition: 0 });
 
+    const xPathData = 'M0,0V' + height;
     const yPathData = 'M0,0H' + width;
 
-    return <g style={{ display: 'block' }}>
-        {yTickValues
-            .map(tickValue => yScale(tickValue))
-            .map(yPosition => 'translate(0,' + yPosition + ')')
-            .map((translation, index) => <path key={index} transform={translation} d={yPathData} stroke='black' />)}
-    </g>
+    return <Group transform={Transform.translate(x, y)}>
+        {xTickPositions.map((xPosition, index) =>
+            <GridLine key={index} transform={Transform.translate(xPosition, 0)} d={xPathData} />)}
+        {yTickPositions.map((yPosition, index) =>
+            <GridLine key={index} transform={Transform.translate(0, yPosition)} d={yPathData} />)}
+    </Group>
 }
 
 export default Grid;

@@ -1,11 +1,9 @@
-import { extent } from 'd3-array';
-import { scaleLinear, scaleUtc } from 'd3-scale';
-import { isoParse } from 'd3-time-format';
-const d3 = { extent, scaleLinear, scaleUtc, isoParse };
 import React from 'react';
 import styled from 'styled-components';
 
 import Grid from 'components/Grid';
+import DateScale from 'utils/DateScale';
+import NumberScale from 'utils/NumberScale';
 
 const Svg = styled.svg`
     display: block;
@@ -13,21 +11,12 @@ const Svg = styled.svg`
     width: 100%;
 `;
 
-function createScale(column, range) {
+function createScale(column) {
     switch (column.type) {
         case 'dateTime':
-            switch (column.format) {
-                case 'iso8601':
-                    return d3.scaleUtc()
-                        .domain(d3.extent(column.data, d3.isoParse))
-                        .range(range);
-                default:
-                    return undefined;
-            }
+            return new DateScale(column.data, column.format);
         case 'number':
-            return d3.scaleLinear()
-                .domain(d3.extent(column.data))
-                .range(range);
+            return new NumberScale(column.data);
         default:
             return undefined;
     }
@@ -77,11 +66,11 @@ class Plot extends React.Component {
         const isVisible = width !== 0 && height !== 0;
         const viewBox = !isVisible ? null : '0 0 ' + width + ' ' + height;
 
-        const xScale = createScale(xColumn, [0, 200]);
-        const yScale = createScale(yColumn, [200, 0]);
+        const xScale = createScale(xColumn);
+        const yScale = createScale(yColumn);
 
         return <Svg viewBox={viewBox} innerRef={svgElement => this.updateSize(svgElement)}>
-            <Grid width={width} height={height} xScale={xScale} yScale={yScale} />
+            <Grid x={0.05 * width} y={0.05 * height} width={0.90 * width} height={0.90 * height} xScale={xScale} yScale={yScale} />
         </Svg>
     }
 }

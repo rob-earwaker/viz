@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const TableDataCell = styled.td`
-    border: 1px solid #ddd;
+    border: 1px solid #d3d3d3;
     padding: 0.5em;
 `;
 
