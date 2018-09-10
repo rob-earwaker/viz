@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
+import ChartView from 'components/ChartView';
 import DataTable from 'components/DataTable';
-import Chart from 'components/Chart';
 import SchemaTable from 'components/SchemaTable';
 import Tab from 'components/Tab';
 import TabView from 'components/TabView';
@@ -28,7 +28,7 @@ ReactDOM.render(
                 <SchemaTable dataFrame={dataFrame} />
             </Tab>
             <Tab label='PLOT'>
-                <Chart xColumn={dataFrame.getColumn('Time')} yColumn={dataFrame.getColumn('Random number')} />
+                <ChartView dataFrame={dataFrame} />
             </Tab>
         </TabView>
     </WindowDiv>,
