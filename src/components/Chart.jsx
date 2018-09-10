@@ -9,7 +9,7 @@ const Svg = styled.svg`
     width: 100%;
 `;
 
-class Plot extends React.Component {
+class Chart extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -59,4 +59,4 @@ class Plot extends React.Component {
     }
 }
 
-export default Plot;
+export default Chart;

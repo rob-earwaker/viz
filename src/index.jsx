@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 import DataTable from 'components/DataTable';
-import Plot from 'components/Plot';
+import Chart from 'components/Chart';
 import SchemaTable from 'components/SchemaTable';
 import Tab from 'components/Tab';
 import TabView from 'components/TabView';
@@ -28,7 +28,7 @@ ReactDOM.render(
                 <SchemaTable dataFrame={dataFrame} />
             </Tab>
             <Tab label='PLOT'>
-                <Plot xColumn={dataFrame.getColumn('Time')} yColumn={dataFrame.getColumn('Random number')} />
+                <Chart xColumn={dataFrame.getColumn('Time')} yColumn={dataFrame.getColumn('Random number')} />
             </Tab>
         </TabView>
     </WindowDiv>,
