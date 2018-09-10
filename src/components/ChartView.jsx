@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Chart from 'components/Chart';
+import Style from 'utils/Style';
 
 const StyledChartView = styled.div`
     display: flex;
@@ -9,28 +10,80 @@ const StyledChartView = styled.div`
 `;
 
 const ChartConfigPanel = styled.div`
-    background-color: green;
+    display: flex;
     flex: 0 1 auto;
+    flex-direction: column;
+`;
+
+const ChartConfigLabel = styled.label`
+    background-color: ${Style.primaryLight.color};
+    color: ${Style.primaryLight.textColor};
+    flex: 0 1 auto;
+    font-family: ${Style.fontFamily};
+`;
+
+const ChartConfigSelect = styled.select`
+    flex: 0 1 auto;
+    font-family: ${Style.fontFamily};
+    outline: none;
 `;
 
 const ChartPanel = styled.div`
     flex: 1 1 auto;
 `;
 
-function ChartView(props) {
-    const { dataFrame } = props;
+class ChartView extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            xColumnLabel: '',
+            yColumnLabel: ''
+        };
+        this.onXColumnLabelChange = this.onXColumnLabelChange.bind(this);
+        this.onYColumnLabelChange = this.onYColumnLabelChange.bind(this);
+    }
 
-    const xColumn = dataFrame.getColumn('Time');
-    const yColumn = dataFrame.getColumn('Random number');
+    onXColumnLabelChange(event) {
+        const xColumnLabel = event.currentTarget.value;
 
-    return <StyledChartView>
-        <ChartConfigPanel>
-            Hello, world!
-        </ChartConfigPanel>
-        <ChartPanel>
-            <Chart xColumn={xColumn} yColumn={yColumn} />
-        </ChartPanel>
-    </StyledChartView>
+        if (xColumnLabel !== this.state.xColumnLabel) {
+            this.setState({ xColumnLabel: xColumnLabel });
+        }
+    }
+
+    onYColumnLabelChange(event) {
+        const yColumnLabel = event.currentTarget.value;
+
+        if (yColumnLabel !== this.state.yColumnLabel) {
+            this.setState({ yColumnLabel: yColumnLabel });
+        }
+    }
+
+    render() {
+        const { dataFrame } = this.props;
+        const { xColumnLabel, yColumnLabel } = this.state;
+
+        const xColumn = dataFrame.getColumn(xColumnLabel);
+        const yColumn = dataFrame.getColumn(yColumnLabel);
+
+        return <StyledChartView>
+            <ChartConfigPanel>
+                <ChartConfigLabel>X Column</ChartConfigLabel>
+                <ChartConfigSelect value={xColumnLabel} onChange={this.onXColumnLabelChange}>
+                    <option></option>
+                    {dataFrame.columns.map((column, index) => <option key={index}>{column.label}</option>)}
+                </ChartConfigSelect>
+                <ChartConfigLabel>Y Column</ChartConfigLabel>
+                <ChartConfigSelect value={yColumnLabel} onChange={this.onYColumnLabelChange} >
+                    <option></option>
+                    {dataFrame.columns.map((column, index) => <option key={index}>{column.label}</option>)}
+                </ChartConfigSelect>
+            </ChartConfigPanel>
+            <ChartPanel>
+                {!xColumn || !yColumn ? null : <Chart xColumn={xColumn} yColumn={yColumn} />}
+            </ChartPanel>
+        </StyledChartView>
+    }
 }
 
 export default ChartView;
