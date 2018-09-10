@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Grid from 'components/Grid';
-import Line from 'components/Line';
-import PositionRange from 'utils/PositionRange';
-import Series from 'utils/Series';
+import LineChart from 'components/LineChart';
 
 const Svg = styled.svg`
     display: block;
@@ -56,14 +53,8 @@ class Plot extends React.Component {
         const isVisible = width !== 0 && height !== 0;
         const viewBox = !isVisible ? null : '0 0 ' + width + ' ' + height;
 
-        const xPositionRange = new PositionRange(0.05 * width, 0.95 * width);
-        const yPositionRange = new PositionRange(0.95 * height, 0.05 * height);
-
-        const series = new Series(xColumn, yColumn, xPositionRange, yPositionRange);
-
         return <Svg viewBox={viewBox} innerRef={svgElement => this.updateSize(svgElement)}>
-            <Grid xScale={series.xScale} yScale={series.yScale} />
-            <Line series={series} />
+            <LineChart width={width} height={height} xColumn={xColumn} yColumn={yColumn} />
         </Svg>
     }
 }

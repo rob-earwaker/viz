@@ -1,12 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import Group from 'components/Group';
 import Path from 'utils/Path';
 import Style from 'utils/Style';
-
-const Group = styled.g`
-    display: block;
-`;
 
 const GridLine = styled.path`
     stroke: #d3d3d3;
