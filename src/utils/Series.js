@@ -1,23 +1,37 @@
+import { nest } from 'd3-collection';
+const d3 = { nest };
+
 import Scale from 'utils/Scale';
 
 class Series {
-    constructor(xColumn, yColumn, xPositionRange, yPositionRange) {
+    constructor(xColumn, yColumn, aggregation, xPositionRange, yPositionRange) {
         this.xColumn = xColumn;
         this.yColumn = yColumn;
+        this.aggregation = aggregation;
         this.xScale = new Scale(xColumn, xPositionRange);
         this.yScale = new Scale(yColumn, yPositionRange);
+        this.pointsPerPixel = 4;
     }
 
     getPointPositions() {
-        return this.xColumn.values
+        const entries = this.xColumn.values
             .map((xValue, index) => ({
-                xValue: xValue,
+                xPosition: this.xScale.getPosition(xValue),
                 yValue: this.yColumn.values[index]
-            }))
-            .map(point => ({
-                x: this.xScale.getPosition(point.xValue),
-                y: this.yScale.getPosition(point.yValue)
             }));
+
+        return d3.nest()
+            .key(entry => Math.round(entry.xPosition * this.pointsPerPixel))
+            .entries(entries)
+            .map(g => {
+                const yValues = g.values.map(entry => entry.yValue);
+                const aggregatedYValue = this.yColumn.aggregate(yValues, this.aggregation);
+
+                return {
+                    x: g.key / this.pointsPerPixel,
+                    y: this.yScale.getPosition(aggregatedYValue)
+                }
+            })
     }
 }
 

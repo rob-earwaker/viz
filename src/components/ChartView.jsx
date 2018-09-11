@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Chart from 'components/Chart';
+import Aggregation from 'utils/Aggregation';
 import Style from 'utils/Style';
 
 const StyledChartView = styled.div`
@@ -36,11 +37,13 @@ class ChartView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            xColumnLabel: '',
-            yColumnLabel: ''
+            xColumnLabel: 'Time',
+            yColumnLabel: 'Value',
+            aggregation: Aggregation.mean
         };
         this.onXColumnLabelChange = this.onXColumnLabelChange.bind(this);
         this.onYColumnLabelChange = this.onYColumnLabelChange.bind(this);
+        this.onAggregationChange = this.onAggregationChange.bind(this);
     }
 
     onXColumnLabelChange(event) {
@@ -59,9 +62,17 @@ class ChartView extends React.Component {
         }
     }
 
+    onAggregationChange(event) {
+        const aggregation = event.currentTarget.value;
+
+        if (aggregation !== this.state.aggregation) {
+            this.setState({ aggregation: aggregation });
+        }
+    }
+
     render() {
         const { dataFrame } = this.props;
-        const { xColumnLabel, yColumnLabel } = this.state;
+        const { xColumnLabel, yColumnLabel, aggregation } = this.state;
 
         const xColumn = dataFrame.getColumn(xColumnLabel);
         const yColumn = dataFrame.getColumn(yColumnLabel);
@@ -78,9 +89,13 @@ class ChartView extends React.Component {
                     <option></option>
                     {dataFrame.columns.map((column, index) => <option key={index}>{column.label}</option>)}
                 </ChartConfigSelect>
+                <ChartConfigLabel>Aggregation</ChartConfigLabel>
+                <ChartConfigSelect value={aggregation} onChange={this.onAggregationChange} >
+                    {Aggregation.allValues().map((aggregation, index) => <option key={index}>{aggregation}</option>)}
+                </ChartConfigSelect>
             </ChartConfigPanel>
             <ChartPanel>
-                {!xColumn || !yColumn ? null : <Chart xColumn={xColumn} yColumn={yColumn} />}
+                {!xColumn || !yColumn ? null : <Chart xColumn={xColumn} yColumn={yColumn} aggregation={aggregation} />}
             </ChartPanel>
         </StyledChartView>
     }

@@ -47,14 +47,16 @@ class Chart extends React.Component {
     }
 
     render() {
-        const { xColumn, yColumn } = this.props;
+        const { xColumn, yColumn, aggregation } = this.props;
         const { width, height } = this.state;
 
         const isVisible = width !== 0 && height !== 0;
         const viewBox = !isVisible ? null : '0 0 ' + width + ' ' + height;
 
         return <Svg viewBox={viewBox} innerRef={svgElement => this.updateSize(svgElement)}>
-            <LineChart width={width} height={height} xColumn={xColumn} yColumn={yColumn} />
+            {!isVisible
+                ? null
+                : <LineChart width={width} height={height} xColumn={xColumn} yColumn={yColumn} aggregation={aggregation} />}
         </Svg>
     }
 }

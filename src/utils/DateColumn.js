@@ -1,7 +1,9 @@
-import { extent } from 'd3-array';
+import { extent, max, mean, min } from 'd3-array';
 import { scaleUtc } from 'd3-scale';
 import { isoFormat, isoParse } from 'd3-time-format';
-const d3 = { extent, scaleUtc, isoFormat, isoParse };
+const d3 = { extent, max, mean, min, scaleUtc, isoFormat, isoParse };
+
+import Aggregation from 'utils/Aggregation';
 
 function getFormatter(format) {
     switch (format) {
@@ -32,6 +34,21 @@ class DateColumn {
         return d3.scaleUtc()
             .domain(d3.extent(this.values))
             .range([positionRange.minPosition, positionRange.maxPosition]);
+    }
+
+    aggregate(values, aggregation) {
+        switch (aggregation) {
+            case Aggregation.min:
+            case Aggregation.minAbs:
+                return d3.min(values);
+            case Aggregation.max:
+            case Aggregation.maxAbs:
+                return d3.max(values);
+            case Aggregation.mean:
+                return d3.mean(values);
+            default:
+                return undefined;
+        }
     }
 }
 
