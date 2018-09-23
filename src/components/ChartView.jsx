@@ -38,7 +38,7 @@ class ChartView extends React.Component {
         super(props);
         this.state = {
             xColumnLabel: 'Time',
-            yColumnLabel: 'Value',
+            yColumnLabel: '',
             aggregation: Aggregation.mean
         };
         this.onXColumnLabelChange = this.onXColumnLabelChange.bind(this);
